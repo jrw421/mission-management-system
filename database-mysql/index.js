@@ -1,6 +1,6 @@
 const mysql = require('mysql');
 const { readAndCleanCorruptedJSON } = require('./json-cleaner');
-const cleanedJsonData = readAndCleanCorruptedJSON('./corrupt.json');
+const cleanedJsonData = readAndCleanCorruptedJSON('database-mysql/corrupt.json');
 
 
 var connection = mysql.createConnection({
@@ -12,42 +12,49 @@ var connection = mysql.createConnection({
 
 
 const loadData = (callback) => {
-  connection.query('SELECT * FROM superhero_villian', function(err, results, fields) {
-    if (!results.length) {
-      for (let i = 0; i < cleanedJsonData.length; i++) {
-        let itemFields = [];
-        let itemFieldsJoin = [];
-        let item = cleanedJsonData[i];
-        itemFields.push([item.name, item.slug]);
-        itemFieldsJoin.push([item.name, item.slug,item.biography.alignment, item.images.sm])
-        
-        connection.query('INSERT INTO superhero_villian (name, slug, alignment, image) VALUES ?', ([itemFieldsJoin]), function(err, results, fields) {
-          if(err) {
-            callback(err, null);
-          } else {
-            callback(null, results);
-          }
-        });
+  cleanedJsonData.then(data => {
+    console.log('data ', data)
+    connection.query('SELECT * FROM superhero_villian', function(err, results, fields) {
+      if (!results.length) {
+        let parseData = JSON.parse(data);
+        for (let i = 0; i < parseData.length; i++) {
+          let itemFields = [];
+          let itemFieldsJoin = [];
+          let item = parseData[i];
+          itemFields.push([item.name, item.slug]);
+          itemFieldsJoin.push([item.name, item.slug, item.biography.alignment, item.images.lg])
+          
+          connection.query('INSERT INTO superhero_villian (name, slug, alignment, image) VALUES ?', ([itemFieldsJoin]), function(err, results, fields) {
+            if(err) {
+              callback(err, null);
+            } else {
+              callback(null, results);
+            }
+          });
 
-        if (item.biography.alignment === ("good" || "GOOD")) {
-          connection.query('INSERT INTO superhero (name, slug) VALUES ?', ([itemFields]), function(err, results, fields) {
-            if(err) {
-              callback(err, null);
-            } else {
-              callback(null, results);
-            }
-          });
-        } else if (item.biography.alignment === ("bad" || "BAD" || "neutral" || null)) { //assumming neutral and null are villians
-          connection.query('INSERT INTO villian (name, slug) VALUES ?', ([itemFields]), function(err, results, fields) {
-            if(err) {
-              callback(err, null);
-            } else {
-              callback(null, results);
-            }
-          });
+          if (item.biography.alignment === ("good" || "GOOD")) {
+            connection.query('INSERT INTO superhero (name, slug) VALUES ?', ([itemFields]), function(err, results, fields) {
+              if(err) {
+                callback(err, null);
+              } else {
+                callback(null, results);
+              }
+            });
+          } else if (item.biography.alignment === ("bad" || "BAD" || "neutral" || null)) { //assumming neutral and null are villians
+            connection.query('INSERT INTO villian (name, slug) VALUES ?', ([itemFields]), function(err, results, fields) {
+              if(err) {
+                callback(err, null);
+              } else {
+                callback(null, results);
+              }
+            });
+          }
         }
       }
-    }
+    })
+  })
+  .catch(err => {
+    console.log('error in cleaning data: ', err);
   })
 }
 ;
