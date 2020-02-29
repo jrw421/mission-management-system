@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { Link } from 'react-router-dom';
 
 class ListItem extends Component {
   constructor(props){
@@ -28,7 +29,8 @@ class ListItem extends Component {
       },
     });
     return(
-        <Card style={{width: "50%", backgroundColor: color}} className={classes.root} onClick={() => console.log('character id ', item.id)}>
+      // <Link to={`/character/:${item.id}`}>
+        <Card style={{width: "50%", backgroundColor: color}} className={classes.root}>
           <CardActionArea>
             <CardMedia
               component="img"
@@ -58,6 +60,7 @@ class ListItem extends Component {
             </Button>
           </CardActions>
         </Card>
+      // </Link>
     )
   }
 }

@@ -1,5 +1,7 @@
 const fs = require('fs');
 const path = require('path');
+const stringCleaners = require('./JSONStringCleaners.js')
+const jsonCleaners = require('./JSONObjectCleaners.js')
 
 /**
  * This function will clean the corrupted JSON and provide a fresh parseable copy.
@@ -9,32 +11,34 @@ const path = require('path');
  * 
  * @param {String} corruptJSON A String of characters representing corrupted JSON data.
  */
-function cleanCorruptJSON(corruptJSON) {
-    // Loop through the JSON data (used for loop for efficiency)
-    for (let x = 0; x < corruptJSON.length -1; x++) {
-        // Check for "}" where corruption pattern might have occurred
-        if (corruptJSON[x] === "}") {
-            // Traverse backwards through the string until we encounter a character
-            var check = 1
-            while(true) {
-                let adjustedIndex = x - check
-                // If the character represents the corruption pattern, fix it and stop search
-                if (corruptJSON[adjustedIndex] === ",") {
-                    corruptJSON = corruptJSON.slice(0, adjustedIndex) + corruptJSON.slice(adjustedIndex + 1)
-                    break
-                // If the character is a space or a new line, keep searching
-                } else if (corruptJSON[x - check] == " " || corruptJSON[x - check] == "\n") {
-                    check++
-                // If the character is valid, stop searching
-                } else {
-                    break
-                }
-            }
-        }    
+function cleanCorruptJSON(corruptJSONString) {
+
+    // Use a callback to reference corruptJSONString in this function scope
+    // so that we may update it if a corruption pattern is found.
+    const updateJSONStringCallBack = (cleanedJSONString) => {
+        corruptJSONString = cleanedJSONString
+    }
+
+    // Loop through the JSON data
+    // Apply all identified data cleaning functions
+    for (let i = 0; i < corruptJSONString.length -1; i++) {
+        stringCleaners.fixCorruptingCommas(corruptJSONString, i, updateJSONStringCallBack)
+    }
+
+    // Use a callback to reference corruptJSON in this function scope
+    // so that we may update it if a corruption pattern is found.
+    let corruptJSONHeroes = JSON.parse(corruptJSONString)
+    for (heroIndex in corruptJSONHeroes) {
+        corruptHeroRecord = corruptJSONHeroes[heroIndex]
+        jsonCleaners.cleanGeneral(corruptHeroRecord)
+        jsonCleaners.cleanId(corruptHeroRecord)
+        jsonCleaners.cleanName(corruptHeroRecord)
+        jsonCleaners.cleanSlug(corruptHeroRecord)
+        jsonCleaners.cleanAppearance(corruptHeroRecord)
     }
 
     // Return the cleaned corruptJSON
-    return corruptJSON
+    return corruptJSONHeroes
 }
 
 /**
@@ -56,5 +60,3 @@ function readAndCleanCorruptedJSON(fileName) {
         });
     })
 }
-
-module.exports = {readAndCleanCorruptedJSON};

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ListItem from './ListItem.jsx';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 class List extends Component {
@@ -28,7 +29,7 @@ class List extends Component {
       <div>
         <h4> List All Heroes and Villians </h4>
         <div style={{display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
-          { superheroes_villians.data ? superheroes_villians.data.map(item => <ListItem key={item.id} item={item}/>) : <h2>loading</h2>}
+          { superheroes_villians.data ? superheroes_villians.data.map(item => <Link to={`/character/:${item.id}`}><ListItem key={item.id} item={item}/></Link>) : <h2>loading</h2>}
         </div>
       </div>
     )
