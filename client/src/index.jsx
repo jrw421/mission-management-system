@@ -13,9 +13,6 @@ const App = () => (
           <li>
             <Link to="/">Home</Link>
           </li>
-          {/* <li>
-            <Link to="/character/:id">Character</Link>
-          </li> */}
           <li>
             <Link to="/villians">Villians</Link>
           </li>

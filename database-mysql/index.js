@@ -1,83 +1,58 @@
+/* eslint-disable no-plusplus */
 const mysql = require('mysql');
 const { readAndCleanCorruptedJSON } = require('./JSONUtilityHelpers/JSONCleanerUtility.js');
+
 const cleanedJsonData = readAndCleanCorruptedJSON('database-mysql/JSONUtilityHelpers/corrupt.json');
 
-
-var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : 'password',
-  database : 'mission_management'
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'password',
+  database: 'mission_management',
 });
 
+const persistDataOrLogError = (callback) => (err, results) => {
+  if (err) {
+    callback(err, null);
+  } else {
+    console.log('results ', results);
+    callback(null, results);
+  }
+};
 
 const loadData = (callback) => {
-  cleanedJsonData.then(data => {
-    connection.query('SELECT * FROM superhero_villian', function(err, results, fields) {
-      let parsedData = JSON.parse(data)
-      if (!results.length) {
-        for (let i = 0; i < parsedData.length; i++) {
-          let itemFields = [];
-          let itemFieldsJoin = [];
-          let item = parsedData[i];
+  cleanedJsonData.then((data) => {
+    connection.query('SELECT * FROM superhero_villian', (err, results) => {
+      if (results && !results.length) {
+        for (let i = 0; i < data.length; i++) {
+          const itemFields = [];
+          const itemFieldsJoin = [];
+          const item = data[i];
           itemFields.push([item.name, item.slug]);
-          itemFieldsJoin.push([item.name, item.slug, item.biography.alignment, item.images.lg, item])
-          
-          connection.query('INSERT INTO superhero_villian (name, slug, alignment, image, rawJSON) VALUES ?', ([itemFieldsJoin]), function(err, results, fields) {
-            if(err) {
-              callback(err, null);
-            } else {
-              callback(null, results);
-            }
-          });
+          itemFieldsJoin.push(
+            [item.name, item.slug, item.biography.alignment, item.images.lg, JSON.stringify(item)],
+          );
+          connection.query('INSERT INTO superhero_villian (name, slug, alignment, image, rawJSON) VALUES ?', ([itemFieldsJoin]), persistDataOrLogError(callback));
 
-          if (item.biography.alignment === "GOOD") {
-            connection.query('INSERT INTO superhero (name, slug) VALUES ?', ([itemFields]), function(err, results, fields) {
-              if(err) {
-                callback(err, null);
-              } else {
-                callback(null, results);
-              }
-            });
-          } else if (item.biography.alignment === ("BAD" || "neutral" || null)) { //assumming neutral and null are villians
-            connection.query('INSERT INTO villian (name, slug) VALUES ?', ([itemFields]), function(err, results, fields) {
-              if(err) {
-                callback(err, null);
-              } else {
-                callback(null, results);
-              }
-            });
+          if (item.biography.alignment === 'GOOD') {
+            connection.query('INSERT INTO superhero (name, slug) VALUES ?', ([itemFields]), persistDataOrLogError(callback));
+          } else if (item.biography.alignment === ('BAD' || 'NEUTRAL' || null)) { // assumming neutral and null are villians
+            connection.query('INSERT INTO villian (name, slug) VALUES ?', ([itemFields]), persistDataOrLogError(callback));
           }
         }
       }
-    })
-  })
-  .catch(err => {
+    });
+  }).catch((err) => {
     console.log('error in cleaning data: ', err);
-  })
-}
-;
-
-const selectAll = (callback) => {
-  connection.query('SELECT * FROM superhero_villian', function(err, results, fields) {
-    if(err) {
-      callback(err, null);
-    } else {
-      console.log('results ', results)
-      callback(null, results);
-    }
   });
 };
 
-const selectHeroById = (id, callback) => {
-  connection.query('SELECT * FROM superhero_villian where id = ?', id, function(err, results, fields) {
-    if(err) {
-      callback(err, null);
-    } else {
-      console.log('results in hero by id ', results)
-      callback(null, results);
-    }
-  });
-}
+const selectAll = (callback) => {
+  connection.query('SELECT * FROM superhero_villian', persistDataOrLogError(callback));
+};
 
-module.exports = {selectAll, loadData, selectHeroById};
+const selectHeroById = (id, callback) => {
+  connection.query('SELECT * FROM superhero_villian where id = ?', id, persistDataOrLogError(callback));
+};
+
+module.exports = { selectAll, loadData, selectHeroById };
