@@ -1,6 +1,6 @@
 const mysql = require('mysql');
-const { readAndCleanCorruptedJSON } = require('./json-cleaner');
-const cleanedJsonData = readAndCleanCorruptedJSON('database-mysql/corrupt.json');
+const { readAndCleanCorruptedJSON } = require('./JSONUtilityHelpers/JSONCleanerUtility.js');
+const cleanedJsonData = readAndCleanCorruptedJSON('database-mysql/JSONCleanerUtilityHelpers/corrupt.json');
 
 
 var connection = mysql.createConnection({
@@ -70,7 +70,7 @@ const selectAll = (callback) => {
 };
 
 const selectHeroById = (id, callback) => {
-  connection.query('SELECT * FROM superhero where id = ?', id, function(err, results, fields) {
+  connection.query('SELECT * FROM superhero_villian where id = ?', id, function(err, results, fields) {
     if(err) {
       callback(err, null);
     } else {
