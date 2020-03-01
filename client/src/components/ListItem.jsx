@@ -15,8 +15,7 @@ class ListItem extends Component {
   }
   
   render() {
-    const { item } = this.props; 
-    console.log(item.alignment)
+    const { item, clickToCompare } = this.props; 
     let color = (item.alignment && item.alignment.toLowerCase() === "good") ? "blue" : "red";
 
     const classes = makeStyles({
@@ -29,8 +28,8 @@ class ListItem extends Component {
       },
     });
     return(
-      // <Link to={`/character/:${item.id}`}>
         <Card style={{width: "50%", backgroundColor: color}} className={classes.root}>
+          <Link to={`/character/${item.id}`} params={{ id: item.id }}>
           <CardActionArea>
             <CardMedia
               component="img"
@@ -51,16 +50,18 @@ class ListItem extends Component {
               </Typography>
             </CardContent>
           </CardActionArea>
+          </Link>
           <CardActions>
-            <Button size="small" color="primary">
-              Learn More
-            </Button>
-            <Button size="small" color="primary">
+            <Link to={`/character/${item.id}`} params={{ id: item.id }}>
+              <Button size="small" color="primary">
+                Learn More
+              </Button>
+            </Link>
+            <Button size="small" color="primary" onClick={() => {clickToCompare(item)}}>
               Compare
             </Button>
           </CardActions>
         </Card>
-      // </Link>
     )
   }
 }

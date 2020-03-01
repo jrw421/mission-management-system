@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import List from './components/List.jsx';
-import Heroes from './components/Heroes.jsx';
+import Character from './components/CharacterCard.jsx';
+import CompareCharacters from './components/CompareCharacters.jsx'
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
 
 const App = () => (
@@ -22,8 +23,8 @@ const App = () => (
       </nav>
 
       <Switch>
-        <Route path="/character/:id" exact component={Heroes}/>
-        <Route path="/villians" exact component={Heroes}/>
+        <Route path="/character/:id" exact component={Character}/>
+        <Route path="/compare-characters" exact component={CompareCharacters}/>
         <Route path="/" exact component={List}/>
           {/* <List /> */}
         <Route component={<div>Sorry, nothing here yet.</div>} />

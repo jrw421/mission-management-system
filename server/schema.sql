@@ -10,6 +10,7 @@ CREATE TABLE superhero_villian (
   slug TEXT,
   alignment TEXT,
   image TEXT,
+  rawJSON TEXT,
   PRIMARY KEY (id)
 );
 
@@ -208,5 +209,5 @@ CREATE TABLE villian_images (
 );
 
 /*  Execute this file from the command line by typing:
- *    mysql -u root < server/schema.sql
+ *    mysql -u root -p < server/schema.sql
  *  to create the database and the tables.*/

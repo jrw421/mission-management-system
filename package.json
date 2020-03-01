@@ -16,7 +16,9 @@
     "webpack": "^2.2.1"
   },
   "dependencies": {
+    "@kadira/storybook": "^2.35.3",
     "@material-ui/core": "^4.9.4",
+    "@storybook/addon-actions": "^5.3.14",
     "axios": "^0.19.2",
     "body-parser": "^1.17.2",
     "dirty-json": "^0.8.0",
@@ -26,6 +28,7 @@
     "mysql": "^2.13.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
+    "react-fuzzy": "^1.0.0",
     "react-router-dom": "^5.1.2",
     "require": "^2.4.20"
   }

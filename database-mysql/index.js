@@ -1,6 +1,6 @@
 const mysql = require('mysql');
 const { readAndCleanCorruptedJSON } = require('./JSONUtilityHelpers/JSONCleanerUtility.js');
-const cleanedJsonData = readAndCleanCorruptedJSON('database-mysql/JSONCleanerUtilityHelpers/corrupt.json');
+const cleanedJsonData = readAndCleanCorruptedJSON('database-mysql/JSONUtilityHelpers/corrupt.json');
 
 
 var connection = mysql.createConnection({
@@ -13,18 +13,17 @@ var connection = mysql.createConnection({
 
 const loadData = (callback) => {
   cleanedJsonData.then(data => {
-    console.log('data ', data)
     connection.query('SELECT * FROM superhero_villian', function(err, results, fields) {
+      let parsedData = JSON.parse(data)
       if (!results.length) {
-        let parseData = JSON.parse(data);
-        for (let i = 0; i < parseData.length; i++) {
+        for (let i = 0; i < parsedData.length; i++) {
           let itemFields = [];
           let itemFieldsJoin = [];
-          let item = parseData[i];
+          let item = parsedData[i];
           itemFields.push([item.name, item.slug]);
-          itemFieldsJoin.push([item.name, item.slug, item.biography.alignment, item.images.lg])
+          itemFieldsJoin.push([item.name, item.slug, item.biography.alignment, item.images.lg, item])
           
-          connection.query('INSERT INTO superhero_villian (name, slug, alignment, image) VALUES ?', ([itemFieldsJoin]), function(err, results, fields) {
+          connection.query('INSERT INTO superhero_villian (name, slug, alignment, image, rawJSON) VALUES ?', ([itemFieldsJoin]), function(err, results, fields) {
             if(err) {
               callback(err, null);
             } else {
@@ -32,7 +31,7 @@ const loadData = (callback) => {
             }
           });
 
-          if (item.biography.alignment === ("good" || "GOOD")) {
+          if (item.biography.alignment === "GOOD") {
             connection.query('INSERT INTO superhero (name, slug) VALUES ?', ([itemFields]), function(err, results, fields) {
               if(err) {
                 callback(err, null);
@@ -40,7 +39,7 @@ const loadData = (callback) => {
                 callback(null, results);
               }
             });
-          } else if (item.biography.alignment === ("bad" || "BAD" || "neutral" || null)) { //assumming neutral and null are villians
+          } else if (item.biography.alignment === ("BAD" || "neutral" || null)) { //assumming neutral and null are villians
             connection.query('INSERT INTO villian (name, slug) VALUES ?', ([itemFields]), function(err, results, fields) {
               if(err) {
                 callback(err, null);
@@ -64,6 +63,7 @@ const selectAll = (callback) => {
     if(err) {
       callback(err, null);
     } else {
+      console.log('results ', results)
       callback(null, results);
     }
   });

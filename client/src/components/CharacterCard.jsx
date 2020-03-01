@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ListItem from './ListItem.jsx';
 import axios from 'axios';
 
 export default class Heroes extends Component {
@@ -10,29 +11,29 @@ export default class Heroes extends Component {
     }
     
     componentDidMount() {
-        axios.get(`/heroes/:${1}`)
+        axios.get(`/heroes/${this.props.match.params.id}`)
             .then(hero => {
                 this.setState({
-                    hero
+                    hero: hero.data
                 })
-                console.log('heroes ', heroes)
+                console.log('heroes ', this.state.hero)
             })
             .catch(err => {
-                console.log('error')
+                console.log('error', err)
             })
     }
 
     render() {
         const { hero } = this.state;
+        let heroCard = hero[0];
         return(
             <div>
-                <h1>HEROES</h1>
-                <div>{hero.id}</div>
-                <div>{hero.slug}</div>
-                <div>{hero.name}</div>
-                {/* {this.state.heroes.map(hero => {
-                    <div>{hero}</div>
-                })} */}
+                {heroCard && 
+                    <div>
+                        <h1>{heroCard.name}</h1>
+                        <ListItem style={{alignItems: "center"}} key={heroCard.id} item={heroCard}/>
+                    </div>
+                }
             </div>
         )
     }
