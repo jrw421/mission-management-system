@@ -13,11 +13,11 @@ class List extends Component {
       superheroes_villians: [],
       superheroes: [],
       compareItems: [],
-      compareNames: []
+      compareNames: [],
+      filters: {}
     }
     this.clickToCompare = this.clickToCompare.bind(this);
     this.renderCharacter = this.renderCharacter.bind(this);
-    this.filterByAlignment = this.filterByAlignment.bind(this);
     this.getHeroStatsById = this.getHeroStatsById.bind(this);
     this.getVillianStatsById = this.getVillianStatsById.bind(this);
   }
@@ -26,10 +26,9 @@ class List extends Component {
     this.getHeroStatsById(2);
     this.getVillianStatsById(7);
     axios.get('/heroes_villians')
-      .then(data => {
+      .then(({data}) => {
         this.setState({
           superheroes_villians: data,
-          backup_data: data
         })
       })
       .catch(err => {
@@ -74,16 +73,36 @@ class List extends Component {
       })
   }
 
-  filterByAlignment(alignment) {
-    let filteredData = this.state.superheroes_villians.data;
-    filteredData = filteredData.filter((item) => {
-      let align = item.alignment && item.alignment.toLowerCase();
-      return align === alignment;
-    })
-    this.setState({ 
-      superheroes_villians: { data: filteredData }
-    })
-  }
+  addOrRemoveFilter(property, value) {
+    const newFilters = Object.assign({}, this.state.filters);
+    const allValues = newFilters[property];
+    if (allValues === undefined) {
+      newFilters[property] = [value];
+    } else if (allValues.includes(value)) {
+      newFilters[property].splice(newFilters[property].indexOf(value), 1);
+    } else {
+      newFilters[property].push(value)
+    }
+    this.setState({
+      filters: newFilters
+    });
+  }
+    
+  checkObjectAgainstFilters(object, filters) {
+    const properties = Object.keys(object);
+    return properties.every((property) => {
+      if(typeof object[property] === "object") {
+        return this.checkFilters(object[property])
+      } else {
+        if (filters[property] === undefined || filters[property].length === 0) return true;
+        return filters[property].includes(object[property])
+      }
+    });
+  }
+    
+  checkFilterIsActive(filters, filter, value) {
+    return filters[filter] !== undefined && filters[filter].includes(value)
+  }
 
   render() {
     const { superheroes_villians } = this.state
@@ -93,8 +112,10 @@ class List extends Component {
         <h3>You have selected {this.state.compareNames.length ? this.state.compareNames[0] + " and " + this.state.compareNames[1] : "no characters"} to compare.</h3>
         <Link to={{pathname: "/compare-characters", state:{ items: this.state.compareItems }}}>See comparison</Link><br/>
 
-        <Button onClick={() => this.filterByAlignment("bad")}>Show all baddies</Button>
-        <Button onClick={() => this.filterByAlignment("good")}>Show all goodies</Button>
+        <Button color= {this.checkFilterIsActive(this.state.filters, "alignment", "BAD") ? "primary" : "secondary" } onClick= {() => this.addOrRemoveFilter("alignment", "BAD")}>Show Baddies</Button>
+        <Button color= {this.checkFilterIsActive(this.state.filters, "alignment", "GOOD") ? "primary" : "secondary" } onClick= {() => this.addOrRemoveFilter("alignment", "GOOD")}>Show Goodies</Button>
+        <Button color= {this.checkFilterIsActive(this.state.filters, "alignment", "NEUTRAL") ? "primary" : "secondary" } onClick= {() => this.addOrRemoveFilter("alignment", "NEUTRAL")}>Show Neutral</Button>
+        <Button color= {this.checkFilterIsActive(this.state.filters, "alignment", "UNKNOWN") ? "primary" : "secondary" } onClick= {() => this.addOrRemoveFilter("alignment", "UNKNOWN")}>Show UNKNOWN</Button>
 
         <FuzzySearch
           list={superheroes_villians.data}
@@ -119,7 +140,7 @@ class List extends Component {
           }}
         />
         <div style={{display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
-          { superheroes_villians.data ? superheroes_villians.data.map(item => <ListItem key={item.id} item={item} clickToCompare={this.clickToCompare} />) : <h2>loading</h2>}
+          { superheroes_villians ? superheroes_villians.filter((character) => this.checkObjectAgainstFilters(character, this.state.filters)).map(item => <ListItem key={item.id} item={item} clickToCompare={this.clickToCompare} />) : <h2>loading</h2>}
         </div>
       </div>
     )
