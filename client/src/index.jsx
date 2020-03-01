@@ -23,7 +23,6 @@ const App = () => (
         <Route path="/character/:id" exact component={Character}/>
         <Route path="/compare-characters" exact component={CompareCharacters}/>
         <Route path="/" exact component={List}/>
-          {/* <List /> */}
         <Route component={<div>Sorry, nothing here yet.</div>} />
       </Switch>
     </div>

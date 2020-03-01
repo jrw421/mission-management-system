@@ -34,16 +34,15 @@ class List extends Component {
   }
 
   clickToCompare(item) {
-    // if (this.state.compareIds.length > 2) {
+    if (this.state.compareNames.length < 4) {
       console.log(item)
       this.setState({
         compareNames: [...this.state.compareNames, item.name],
         compareItems: [...this.state.compareItems, item]
       })
-    // } 
-    // else {
-    //   alert("You can only compare two characters");
-    // }
+    } else {
+      alert("You can only compare two characters");
+    }
   }
 
   renderCharacter(item) {
