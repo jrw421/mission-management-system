@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "react-dev": "webpack -d --watch",
-    "server-dev": "nodemon server/index.js"
+    "server-dev": "nodemon server/index.js",
+    "docker-build": "docker build -t jrw421/blackboard-assessment .",
+    "docker-run": "docker run -p 49160:8080 -d jrw421/blackboard-assessment"
   },
   "author": "Jess Wolvington",
   "devDependencies": {
