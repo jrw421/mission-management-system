@@ -18,9 +18,13 @@ class List extends Component {
     this.clickToCompare = this.clickToCompare.bind(this);
     this.renderCharacter = this.renderCharacter.bind(this);
     this.filterByAlignment = this.filterByAlignment.bind(this);
+    this.getHeroStatsById = this.getHeroStatsById.bind(this);
+    this.getVillianStatsById = this.getVillianStatsById.bind(this);
   }
 
   componentDidMount() {
+    this.getHeroStatsById(2);
+    this.getVillianStatsById(7);
     axios.get('/heroes_villians')
       .then(data => {
         this.setState({
@@ -35,13 +39,12 @@ class List extends Component {
 
   clickToCompare(item) {
     if (this.state.compareNames.length < 4) {
-      console.log(item)
       this.setState({
         compareNames: [...this.state.compareNames, item.name],
         compareItems: [...this.state.compareItems, item]
       })
     } else {
-      alert("You can only compare two characters");
+      alert("You can only compare up to four characters");
     }
   }
 
@@ -50,7 +53,27 @@ class List extends Component {
       <ListItem key={item.id} item={item} clickToCompare={this.clickToCompare} />
     )
   }
+
+  getHeroStatsById(id) {
+    axios.get(`/hero-stats/${2}`)
+      .then(stats => {
+        console.log('stats ', stats)
+      })
+      .catch(err => {
+        console.log('error: ', err)
+      })
+  }
   
+  getVillianStatsById(id) {
+    axios.get(`/villian-stats/${12}`)
+      .then(stats => {
+        console.log('villian stats ', stats)
+      })
+      .catch(err => {
+        console.log('error: ', err)
+      })
+  }
+
   filterByAlignment(alignment) {
     let filteredData = this.state.superheroes_villians.data;
     filteredData = filteredData.filter((item) => {
@@ -62,13 +85,8 @@ class List extends Component {
     })
   }
 
-  filterByCondition(condition, character) {
-
-  }
-
   render() {
     const { superheroes_villians } = this.state
-    console.log('data ', this.state.superheroes_villians)
     return(
       <div>
         <h4> List All Heroes and Villians</h4>

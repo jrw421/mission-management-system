@@ -15,7 +15,7 @@ const persistDataOrLogError = (callback) => (err, results) => {
   if (err) {
     callback(err, null);
   } else {
-    console.log('results ', results);
+    // console.log('results ', results);
     callback(null, results);
   }
 };
@@ -27,17 +27,22 @@ const loadData = (callback) => {
         for (let i = 0; i < data.length; i++) {
           const itemFields = [];
           const itemFieldsJoin = [];
+          const itemFieldsPowerStats = [];
           const item = data[i];
           itemFields.push([item.name, item.slug]);
           itemFieldsJoin.push(
             [item.name, item.slug, item.biography.alignment, item.images.lg, JSON.stringify(item)],
           );
+          itemFieldsPowerStats.push([item.powerstats.intelligence, item.powerstats.strength, item.powerstats.speed, item.powerstats.durability, item.powerstats.power, item.powerstats.combat]);
           connection.query('INSERT INTO superhero_villian (name, slug, alignment, image, rawJSON) VALUES ?', ([itemFieldsJoin]), persistDataOrLogError(callback));
-
           if (item.biography.alignment === 'GOOD') {
-            connection.query('INSERT INTO superhero (name, slug) VALUES ?', ([itemFields]), persistDataOrLogError(callback));
-          } else if (item.biography.alignment === ('BAD' || 'NEUTRAL' || null)) { // assumming neutral and null are villians
-            connection.query('INSERT INTO villian (name, slug) VALUES ?', ([itemFields]), persistDataOrLogError(callback));
+            // connection.query('INSERT INTO superhero (name, slug) VALUES ?', ([itemFields]), persistDataOrLogError(callback));
+            connection.query('INSERT INTO superhero_powerstats (intelligence, strength, speed, durability, power, combat) VALUES ?', ([itemFieldsPowerStats]), persistDataOrLogError(callback));
+          } else { // assumming neutral and null are villians
+            console.log('in baddies?')
+            // connection.query('INSERT INTO villian (name, srslug) VALUES ?', ([itemFields]), persistDataOrLogError(callback));
+            connection.query('INSERT INTO villian_powerstats (intelligence, strength, speed, durability, power, combat) VALUES ?', ([itemFieldsPowerStats]), persistDataOrLogError(callback));
+            console.log('insertedddd')
           }
         }
       }
@@ -55,4 +60,18 @@ const selectHeroById = (id, callback) => {
   connection.query('SELECT * FROM superhero_villian where id = ?', id, persistDataOrLogError(callback));
 };
 
-module.exports = { selectAll, loadData, selectHeroById };
+const selectHeroStatsById = (id, callback) => {
+  connection.query('SELECT * FROM superhero_powerstats where superhero_id = ?', id, persistDataOrLogError(callback));
+};
+
+const selectVillianStatsById = (id, callback) => {
+  connection.query('SELECT * FROM villian_powerstats where villian_id = ?', id, persistDataOrLogError(callback));
+};
+
+module.exports = {
+  selectAll,
+  loadData,
+  selectHeroById,
+  selectHeroStatsById,
+  selectVillianStatsById
+};
