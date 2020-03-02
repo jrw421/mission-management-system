@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import BarChart from 'react-easy-bar-chart';
 import TitleNavBar from '../atoms/TitleNavBar.jsx'
 import Button from '@material-ui/core/Button'
-import { display } from '@material-ui/system';
 
 class CompareStatsChart extends Component {
   constructor(props) {
@@ -22,7 +21,6 @@ class CompareStatsChart extends Component {
     const colors = ["#7B4B94", "#7D82B8", "#B7E3CC", "#C4FFB2"]
     const data = this.props.characters.map((character, i) => {
       const powerstats = JSON.parse(character.rawJSON).powerstats
-      console.log(powerstats)
       return {
         title: character.name + " " + this.state.attribute,
         value: powerstats[this.state.attribute],

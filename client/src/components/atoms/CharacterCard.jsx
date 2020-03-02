@@ -8,9 +8,6 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
-import { StylesContext } from '@material-ui/styles';
-import styles from '../../styles/main.css';
-import { Container } from '@material-ui/core';
 
 class CharacterCard extends Component {
   constructor(props){
@@ -70,7 +67,7 @@ class CharacterCard extends Component {
                </Button>
                </div>
               :
-              <Button size="small" onClick={() => this.setState({ showDetails: !this.state.showDetails}, console.log('click'))}>
+              <Button size="small" onClick={() => this.setState({ showDetails: !this.state.showDetails})}>
                   {!this.state.showDetails ? "Learn More" : "Hide details"};
               </Button>
             }

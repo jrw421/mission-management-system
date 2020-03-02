@@ -6,7 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import '../../styles/main.css'
 
 export default (props) => {
-  console.log(props)
   return (
     <AppBar position="static" className="bottom-margin">
      <Toolbar>

@@ -19,6 +19,7 @@ const persistDataOrLogError = (callback) => (err, results) => {
   }
 };
 
+// Clean JSON and seed the database based on alignment. 
 const loadData = (callback) => {
   cleanedJsonData.then((data) => {
     connection.query('SELECT * FROM superhero_villian', (err, results) => {
@@ -35,10 +36,8 @@ const loadData = (callback) => {
           itemFieldsPowerStats.push([item.powerstats.intelligence, item.powerstats.strength, item.powerstats.speed, item.powerstats.durability, item.powerstats.power, item.powerstats.combat]);
           connection.query('INSERT INTO superhero_villian (name, slug, alignment, image, rawJSON) VALUES ?', ([itemFieldsJoin]), persistDataOrLogError(callback));
           if (item.biography.alignment === 'GOOD') {
-            // connection.query('INSERT INTO superhero (name, slug) VALUES ?', ([itemFields]), persistDataOrLogError(callback));
             connection.query('INSERT INTO superhero_powerstats (intelligence, strength, speed, durability, power, combat) VALUES ?', ([itemFieldsPowerStats]), persistDataOrLogError(callback));
           } else { // assumming neutral and null are villians
-            // connection.query('INSERT INTO villian (name, srslug) VALUES ?', ([itemFields]), persistDataOrLogError(callback));
             connection.query('INSERT INTO villian_powerstats (intelligence, strength, speed, durability, power, combat) VALUES ?', ([itemFieldsPowerStats]), persistDataOrLogError(callback));
           }
         }
@@ -70,5 +69,5 @@ module.exports = {
   loadData,
   selectHeroById,
   selectHeroStatsById,
-  selectVillianStatsById
+  selectVillianStatsById,
 };

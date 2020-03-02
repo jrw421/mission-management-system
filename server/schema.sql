@@ -14,6 +14,31 @@ CREATE TABLE superhero_villian (
   PRIMARY KEY (id)
 );
 
+CREATE TABLE superhero_powerstats (
+  superhero_id INT NOT NULL AUTO_INCREMENT,
+  intelligence VARCHAR(50),
+  strength VARCHAR(50),
+  speed VARCHAR(50),
+  durability VARCHAR(50),
+  power VARCHAR(50),
+  combat VARCHAR(50),
+  PRIMARY KEY (superhero_id),
+  FOREIGN KEY (superhero_id) REFERENCES superhero_villian(id)
+);
+
+
+CREATE TABLE villian_powerstats (
+  villian_id INT NOT NULL AUTO_INCREMENT,
+  intelligence VARCHAR(50),
+  strength VARCHAR(50),
+  speed VARCHAR(50),
+  durability VARCHAR(50),
+  power VARCHAR(50),
+  combat VARCHAR(50),
+  PRIMARY KEY (villian_id),
+  FOREIGN KEY (villian_id) REFERENCES superhero_villian(id)
+);
+
 /**
 
 The tables below are structured so as to organize the data in as clean a way as possible. 
@@ -29,18 +54,6 @@ below with the data from the JSON.
 --   slug TEXT,
 --   PRIMARY KEY (id)
 -- );
-
-CREATE TABLE superhero_powerstats (
-  superhero_id INT NOT NULL AUTO_INCREMENT,
-  intelligence VARCHAR(50),
-  strength VARCHAR(50),
-  speed VARCHAR(50),
-  durability VARCHAR(50),
-  power VARCHAR(50),
-  combat VARCHAR(50),
-  PRIMARY KEY (superhero_id),
-  FOREIGN KEY (superhero_id) REFERENCES superhero_villian(id)
-);
 
 -- CREATE TABLE superhero_appearance (
 --   superhero_id INT,
@@ -125,18 +138,6 @@ CREATE TABLE superhero_powerstats (
 --   slug TEXT,
 --   PRIMARY KEY (id)
 -- );
-
-CREATE TABLE villian_powerstats (
-  villian_id INT NOT NULL AUTO_INCREMENT,
-  intelligence VARCHAR(50),
-  strength VARCHAR(50),
-  speed VARCHAR(50),
-  durability VARCHAR(50),
-  power VARCHAR(50),
-  combat VARCHAR(50),
-  PRIMARY KEY (villian_id),
-  FOREIGN KEY (villian_id) REFERENCES superhero_villian(id)
-);
 
 -- CREATE TABLE villian_appearance (
 --   villian_id INT,

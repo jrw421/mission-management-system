@@ -1,9 +1,9 @@
-const { feetToCentimeters, cmToFeet, lbToKG, kgToLb } = require('./JSONCleanerHelpers.js')
+const { feetToCentimeters, cmToFeet, lbToKG, kgToLb } = require('./JSONCleanerHelpers.js');
 
 /**
  * A constant value that will indicate replaced corrupt data.
  */
-const UNKNOWN = "UNKNOWN"
+const UNKNOWN = "UNKNOWN";
 
 /**
  * This function assigns an ID to a hero if non exists or the value is invalid.

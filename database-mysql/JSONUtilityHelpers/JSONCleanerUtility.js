@@ -2,8 +2,8 @@
 /* eslint-disable no-plusplus */
 const fs = require('fs');
 const path = require('path');
-const stringCleaners = require('./JSONStringCleaners.js')
-const jsonCleaners = require('./JSONObjectCleaners.js')
+const stringCleaners = require('./JSONStringCleaners.js');
+const jsonCleaners = require('./JSONObjectCleaners.js');
 
 /**
  * This function will clean the corrupted JSON and provide a fresh parseable copy.
