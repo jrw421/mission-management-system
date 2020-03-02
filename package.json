@@ -11,7 +11,7 @@
     "db-dev": "mysql -u root -p < server/schema.sql && node database-mysql/loadData.js",
     "docker-build": "docker build -t jrw421/blackboard-assessment .",
     "docker-run": "docker run -p 5000:3000 -d jrw421/blackboard-assessment",
-    "build": "npm run-script build"
+    "build": "NODE_ENV='production' webpack -p"  
   },
   "author": "Jess Wolvington",
   "devDependencies": {

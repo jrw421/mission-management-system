@@ -4,7 +4,9 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const SRC_DIR = path.join(__dirname, '/client/src');
 const DIST_DIR = path.join(__dirname, '/client/dist');
 
-module.exports = {
+const webpack = require('webpack');
+
+const webpackConfig = {
   entry: {
     scripts: './client/src/index.jsx',
   },
@@ -35,3 +37,16 @@ module.exports = {
     new ExtractTextPlugin('styles.css'),
   ],
 };
+
+if (process.env.NODE_ENV === 'production') {
+  webpackConfig.plugins.push(
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        screw_ie8: true,
+      },
+    }),
+    new webpack.optimize.DedupePlugin(),
+  );
+}
+
+module.exports = webpackConfig;
