@@ -15,7 +15,6 @@ const App = () => (
       <Route path="/character/:id" exact component={CharacterDetailView}/>
       <Route path="/compare-characters" exact component={CompareCharacters}/>
       <Route path="/" exact component={CharacterList}/>
-      <Route component={<div>Sorry, nothing here yet.</div>} />
     </Switch>
   </Router>
   )
