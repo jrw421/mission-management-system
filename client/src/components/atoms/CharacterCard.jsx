@@ -9,9 +9,12 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 
-class ListItem extends Component {
+class CharacterCard extends Component {
   constructor(props){
     super(props);
+    this.state = {
+      showDetails: false
+    }
   }
   
   render() {
@@ -27,8 +30,11 @@ class ListItem extends Component {
         height: 140,
       },
     });
+    const characterEndpoint = window.location.href.indexOf("character") !== -1 && window.location.href.indexOf("compare") === -1;
+    const characterRenderShowMore = window.location.href.indexOf("character") !== -1;
+    console.log(' character ', window.location.href.indexOf("character") !== -1, window.location.href.indexOf("compare-characters") === -1)
     return(
-        <Card style={{width: "50%", backgroundColor: color}} className={classes.root}>
+        <Card style={{width: characterEndpoint ? "100%" : "50%", backgroundColor: color}} className={classes.root}>
           <Link to={`/character/${item.id}`} params={{ id: item.id }}>
           <CardActionArea>
             <CardMedia
@@ -52,17 +58,30 @@ class ListItem extends Component {
           </CardActionArea>
           </Link>
           <CardActions>
-            <Link to={`/character/${item.id}`} params={{ id: item.id }}>
-              <Button size="small" color="primary">
-                Learn More
+            {window && !characterRenderShowMore ?
+            <div>
+              <Link to={`/character/${item.id}`} params={{ id: item.id }}>
+                <Button size="small" color="primary">
+                  Learn More
+                </Button>
+              </Link>
+                 <Button size="small" color="primary" onClick={() => {clickToCompare(item)}}>
+                 Compare
+               </Button>
+               </div>
+              :
+              <Button size="small" color="primary" onClick={() => this.setState({ showDetails: !this.state.showDetails}, console.log('click'))}>
+                  {!this.state.showDetails ? "Learn More" : "Hide details"};
               </Button>
-            </Link>
-            <Button size="small" color="primary" onClick={() => {clickToCompare(item)}}>
-              Compare
-            </Button>
+            }
+            {this.state.showDetails && 
+              <div>
+                {item.rawJSON}
+              </div>
+            }
           </CardActions>
         </Card>
     )
   }
 }
-export default ListItem;
+export default CharacterCard;

@@ -1,13 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import List from './components/List.jsx';
-import Character from './components/CharacterCard.jsx';
-import CompareCharacters from './components/CompareCharacters.jsx'
-import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
+import CharacterList from './components/molecules/CharacterList.jsx';
+import CharacterDetailView from './components/molecules/CharacterDetailView.jsx';
+import CompareCharacters from './components/molecules/CompareCharacters.jsx'
+// import { BrowserRouter, Route, Switch, Link, withRouter } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch, Link 
+} from 'react-router-dom';
 
 const App = () => (
-    <BrowserRouter>
-      <div>
+    <Router>
       <nav>
         <ul>
           <li>
@@ -20,13 +24,12 @@ const App = () => (
       </nav>
 
       <Switch>
-        <Route path="/character/:id" exact component={Character}/>
+        <Route path="/character/:id" exact component={CharacterDetailView}/>
         <Route path="/compare-characters" exact component={CompareCharacters}/>
-        <Route path="/" exact component={List}/>
+        <Route path="/" exact component={CharacterList}/>
         <Route component={<div>Sorry, nothing here yet.</div>} />
       </Switch>
-    </div>
-  </BrowserRouter>
+  </Router>
   )
 
 ReactDOM.render(<App />, document.getElementById('app'));

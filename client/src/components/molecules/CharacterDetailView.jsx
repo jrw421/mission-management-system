@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import ListItem from './ListItem.jsx';
 import axios from 'axios';
+import CharacterCard from '../atoms/CharacterCard.jsx';
 
-export default class Heroes extends Component {
+export default class CharacterDetailView extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -24,6 +24,7 @@ export default class Heroes extends Component {
     }
 
     render() {
+        console.log('this is proips in detail', this.props)
         const { hero } = this.state;
         let heroCard = hero[0];
         return(
@@ -31,7 +32,7 @@ export default class Heroes extends Component {
                 {heroCard && 
                     <div>
                         <h1>{heroCard.name}</h1>
-                        <ListItem style={{alignItems: "center"}} key={heroCard.id} item={heroCard}/>
+                        <CharacterCard style={{alignItems: "center"}} key={heroCard.id} item={heroCard} router={this.props}/>
                     </div>
                 }
             </div>

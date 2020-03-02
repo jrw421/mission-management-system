@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import ListItem from './ListItem.jsx';
+import ListItem from '../atoms/CharacterCard.jsx';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import FuzzySearch from 'react-fuzzy';
 import Button from '@material-ui/core/Button';
 import { action } from '@storybook/addon-actions';
 
-class List extends Component {
+class CharacterList extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -109,7 +109,7 @@ class List extends Component {
     return(
       <div>
         <h4> List All Heroes and Villians</h4>
-        <h3>You have selected {this.state.compareNames.length ? this.state.compareNames[0] + " and " + this.state.compareNames[1] : "no characters"} to compare.</h3>
+        <h3>You have selected {this.state.compareNames.length ? this.state.compareNames.slice(",").join(", ") : "no characters"} to compare.</h3>
         <Link to={{pathname: "/compare-characters", state:{ items: this.state.compareItems }}}>See comparison</Link><br/>
 
         <Button color= {this.checkFilterIsActive(this.state.filters, "alignment", "BAD") ? "primary" : "secondary" } onClick= {() => this.addOrRemoveFilter("alignment", "BAD")}>Show Baddies</Button>
@@ -118,14 +118,15 @@ class List extends Component {
         <Button color= {this.checkFilterIsActive(this.state.filters, "alignment", "UNKNOWN") ? "primary" : "secondary" } onClick= {() => this.addOrRemoveFilter("alignment", "UNKNOWN")}>Show UNKNOWN</Button>
 
         <FuzzySearch
-          list={superheroes_villians.data}
+          list={superheroes_villians}
+          caseSensitive={false}
           keys={['name', 'alignment']}
           width={430}
           onSelect={action('selected')}
           distance={3}
           threshold={.01}
           resultsTemplate={(props, state, styles, clickHandler) => {
-            return superheroes_villians.data.map((item, i) => {
+            return state.results.map((item, i) => {
               const style = state.selectedIndex === i ? styles.selectedResultStyle : styles.resultsStyle;
               return (
                   <div
@@ -147,4 +148,4 @@ class List extends Component {
   }
 }
 
-export default List;
+export default CharacterList;

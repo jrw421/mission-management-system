@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ListItem from './ListItem.jsx';
+import ListItem from '../atoms/CharacterCard.jsx';
 
 export default class CompareCharacters extends Component {
     constructor(props){
