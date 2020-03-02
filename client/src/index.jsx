@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import CharacterList from './components/molecules/CharacterList.jsx';
-import CharacterDetailView from './components/molecules/CharacterDetailView.jsx';
-import CompareCharacters from './components/molecules/CompareCharacters.jsx'
+import CharacterList from './components/organisms/CharacterList.jsx';
+import CharacterDetailView from './components/organisms/CharacterDetailView.jsx';
+import CompareCharacters from './components/organisms/CompareCharacters.jsx'
 import {
   BrowserRouter as Router,
   Route,

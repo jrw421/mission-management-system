@@ -13,6 +13,7 @@
     flex-direction: row;
     flex-wrap: wrap; 
     margin-top: 5%;
+    width: 100%;
 }
 
 .fuzzySearch {
@@ -29,6 +30,6 @@
     color: white;
 }
 
-.smallButton {
-    color: white !important;
+.bottom-margin {
+    margin-bottom: 15px;
 }

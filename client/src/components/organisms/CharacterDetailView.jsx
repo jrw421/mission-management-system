@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import CharacterCard from '../atoms/CharacterCard.jsx';
+import TitleNavBar from '../atoms/TitleNavBar.jsx'
 
 export default class CharacterDetailView extends Component {
     constructor(props){
@@ -8,6 +9,11 @@ export default class CharacterDetailView extends Component {
         this.state = {
             hero: {}
         }
+        this.goBack = this.goBack.bind(this)
+    }
+
+    goBack() {
+        this.props.history.push('/');
     }
     
     componentDidMount() {
@@ -16,7 +22,6 @@ export default class CharacterDetailView extends Component {
                 this.setState({
                     hero: hero.data
                 })
-                console.log('heroes ', this.state.hero)
             })
             .catch(err => {
                 console.log('error', err)
@@ -24,14 +29,13 @@ export default class CharacterDetailView extends Component {
     }
 
     render() {
-        console.log('this is proips in detail', this.props)
         const { hero } = this.state;
         let heroCard = hero[0];
         return(
             <div>
+                <TitleNavBar return = {this.goBack} title = {heroCard ? heroCard.name : "UNKNOWN"}></TitleNavBar>
                 {heroCard && 
-                    <div>
-                        <h1>{heroCard.name}</h1>
+                    <div style={{width: "30%"}}>
                         <CharacterCard style={{alignItems: "center"}} key={heroCard.id} item={heroCard} router={this.props}/>
                     </div>
                 }
