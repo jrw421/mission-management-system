@@ -1,4 +1,4 @@
-Hey there! Thanks so much for taking a look at the Official Mission Management System. I had a really good time putting it together and I hope it's a well-rounded representation of my skillset. 
+Hey there! Thanks so much for taking a look at the Official Mission Management System. I had a really good time putting it together and I hope it's a well-rounded representation of my skillset. I spent a total of 3 days on the project. 
 
 While my time and resources were limited, I included my thought process, design thinking, and what I would include/do differently given more time. Of course, please feel free to reach out with any questions or clarifications you may have. In addition - always open to feature requests and constructive criticism.
 
@@ -75,3 +75,5 @@ Challenges:
 What would I go back and do differently?
 - Add linting to my codebase earlier on! Having normally worked on legacy codebases with linting already installed, it was not at the forefront of my mind, and thus was not added until midway through my work, making the tedious process of retroactive linting a time consuming process. 
 - Git workflow. Given the number of features and the timeline of the project I opted for the simplest git workflow possible. Given more time I would have defined (and documented) a more thorough workflow so that teammates could hop in and contribute at any point.
+- More documentation and better commenting of code. Given more time I would have commented in the same fashion as the JSON cleaner files so that future me or teammates would be able to dive into the codebase and be able to clearly understand how everything worked.
+- Given more time, I would have also added mySQL to the docker container, as currently it runs the node backend without the database.

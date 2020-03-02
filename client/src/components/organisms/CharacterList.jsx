@@ -70,7 +70,6 @@ class CharacterList extends Component {
   getHeroStatsById(id) {
     axios.get(`/hero-stats/${id}`)
       .then(stats => {
-        console.log('stats ', stats)
       })
       .catch(err => {
         console.log('error: ', err)
@@ -80,7 +79,6 @@ class CharacterList extends Component {
   getVillianStatsById(id) {
     axios.get(`/villian-stats/${id}`)
       .then(stats => {
-        console.log('villian stats ', stats)
       })
       .catch(err => {
         console.log('error: ', err)
