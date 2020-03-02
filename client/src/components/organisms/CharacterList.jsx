@@ -186,7 +186,7 @@ class CharacterList extends Component {
       <Container style={{display:"flex"}}>
         <div className="characterListCards">
           { superheroes_villians && this.state.filters ? superheroes_villians.filter((character) => this.checkObjectAgainstFilters(character, this.state.filters)).map(item => <ListItem style={{padding: "1px"}} key={item.id} item={item} clickToCompare={this.clickToCompare} />)
-          .sort(function(a, b) { return JSON.parse(a.props.item.rawJSON).powerstats[sortFilter] - JSON.parse(b.props.item.rawJSON).powerstats[sortFilter]})
+          .sort(function(a, b) { return JSON.parse(b.props.item.rawJSON).powerstats[sortFilter] - JSON.parse(a.props.item.rawJSON).powerstats[sortFilter]})
            :
            ( <h2>loading</h2> ) }
         </div>
