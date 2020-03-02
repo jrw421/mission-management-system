@@ -131,7 +131,7 @@ class CharacterList extends Component {
   render() {
     const { superheroes_villians, sortFilter } = this.state;
     const options = [
-      'intelligence', 'strength', 'speed', 'durability', 'power', 'combat'
+      'Intelligence', 'Strength', 'Speed', 'Durability', 'Power', 'Combat'
     ];
 
     return(
