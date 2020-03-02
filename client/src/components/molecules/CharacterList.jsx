@@ -108,10 +108,11 @@ class CharacterList extends Component {
     const { superheroes_villians } = this.state
     return(
       <div>
-        <h4> List All Heroes and Villians</h4>
+        <h1> List All Heroes and Villians</h1>
         <h3>You have selected {this.state.compareNames.length ? this.state.compareNames.slice(",").join(", ") : "no characters"} to compare.</h3>
-        <Link to={{pathname: "/compare-characters", state:{ items: this.state.compareItems }}}>See comparison</Link><br/>
+        <Link to={{pathname: "/compare-characters", state:{ items: this.state.compareItems }}}><h3>See comparison</h3></Link><br/>
 
+        <h2>Filter characters with multiple options. Filters in blue are being applied.</h2>
         <Button color= {this.checkFilterIsActive(this.state.filters, "alignment", "BAD") ? "primary" : "secondary" } onClick= {() => this.addOrRemoveFilter("alignment", "BAD")}>Show Baddies</Button>
         <Button color= {this.checkFilterIsActive(this.state.filters, "alignment", "GOOD") ? "primary" : "secondary" } onClick= {() => this.addOrRemoveFilter("alignment", "GOOD")}>Show Goodies</Button>
         <Button color= {this.checkFilterIsActive(this.state.filters, "alignment", "NEUTRAL") ? "primary" : "secondary" } onClick= {() => this.addOrRemoveFilter("alignment", "NEUTRAL")}>Show Neutral</Button>

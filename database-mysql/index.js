@@ -15,7 +15,6 @@ const persistDataOrLogError = (callback) => (err, results) => {
   if (err) {
     callback(err, null);
   } else {
-    // console.log('results ', results);
     callback(null, results);
   }
 };
@@ -39,10 +38,8 @@ const loadData = (callback) => {
             // connection.query('INSERT INTO superhero (name, slug) VALUES ?', ([itemFields]), persistDataOrLogError(callback));
             connection.query('INSERT INTO superhero_powerstats (intelligence, strength, speed, durability, power, combat) VALUES ?', ([itemFieldsPowerStats]), persistDataOrLogError(callback));
           } else { // assumming neutral and null are villians
-            console.log('in baddies?')
             // connection.query('INSERT INTO villian (name, srslug) VALUES ?', ([itemFields]), persistDataOrLogError(callback));
             connection.query('INSERT INTO villian_powerstats (intelligence, strength, speed, durability, power, combat) VALUES ?', ([itemFieldsPowerStats]), persistDataOrLogError(callback));
-            console.log('insertedddd')
           }
         }
       }

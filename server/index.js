@@ -44,13 +44,6 @@ app.get('/villian-stats/:id', (req, res) => {
 });
 
 app.get('/heroes_villians', (req, res) => {
-  items.loadData((err, data) => {
-    if (err) {
-      console.log('error: ', err);
-    } else {
-      console.log('data loaded successfully');
-    }
-  });
   items.selectAll((err, data) => {
     if (err) {
       res.sendStatus(500);
