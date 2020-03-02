@@ -5,12 +5,13 @@ import axios from 'axios';
 import FuzzySearch from 'react-fuzzy';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
-import classes from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import { action } from '@storybook/addon-actions';
 import '../../styles/main.css';
 import Typography from '@material-ui/core/Typography';
 import TitleNavBar from '../atoms/TitleNavBar.jsx';
+import Dropdown from 'react-dropdown'
+import 'react-dropdown/style.css'
 
 class CharacterList extends Component {
   constructor(props){
@@ -21,13 +22,14 @@ class CharacterList extends Component {
       compareItems: [],
       compareNames: [],
       filters: {},
-      powerstats: {}
+      sortFilter: "strength"
     }
     this.clickToCompare = this.clickToCompare.bind(this);
     this.renderCharacter = this.renderCharacter.bind(this);
     this.getHeroStatsById = this.getHeroStatsById.bind(this);
     this.getVillianStatsById = this.getVillianStatsById.bind(this);
-    this.goBack = this.goBack.bind(this)
+    this.goBack = this.goBack.bind(this);
+    this.onSelect = this.onSelect.bind(this);
   }
 
   goBack() {
@@ -117,11 +119,23 @@ class CharacterList extends Component {
   }
 
   sortCharacters(sortFilter) {
+    this.setState({
+      sortFilter: sortFilter
+    })
+  }
 
+  onSelect(e) {
+    this.setState({
+      sortFilter: e.value
+    })
   }
 
   render() {
-    const { superheroes_villians } = this.state
+    const { superheroes_villians, sortFilter } = this.state;
+    const options = [
+      'intelligence', 'strength', 'speed', 'durability', 'power', 'combat'
+    ];
+
     return(
       <div className="characterList">
       <TitleNavBar title = "Character View" return={this.goBack}></TitleNavBar>
@@ -129,8 +143,11 @@ class CharacterList extends Component {
       <Button variant = "contained" color= {this.checkFilterIsActive(this.state.filters, "alignment", "BAD") ? "primary" : "secondary" } onClick= {() => this.addOrRemoveFilter("alignment", "BAD")}>Show Baddies</Button>
       <Button variant = "contained" color= {this.checkFilterIsActive(this.state.filters, "alignment", "GOOD") ? "primary" : "secondary" } onClick= {() => this.addOrRemoveFilter("alignment", "GOOD")}>Show Goodies</Button>
       <Button variant = "contained" color= {this.checkFilterIsActive(this.state.filters, "alignment", "NEUTRAL") ? "primary" : "secondary" } onClick= {() => this.addOrRemoveFilter("alignment", "NEUTRAL")}>Show Neutral</Button>
-      <Button variant = "contained" color= {this.checkFilterIsActive(this.state.filters, "alignment", "UNKNOWN") ? "primary" : "secondary" } onClick= {() => this.addOrRemoveFilter("alignment", "UNKNOWN")}>Show UNKNOWN</Button>
-      <Button variant = "contained" color= {this.checkFilterIsActive(this.state.filters, "alignment", "UNKNOWN") ? "primary" : "secondary" } onClick= {() => this.sortCharacters("strength", "UNKNOWN")}>Sort By Stength</Button>
+      <Button variant = "contained" color= {this.checkFilterIsActive(this.state.filters, "alignment", "UNKNOWN") ? "primary" : "secondary" } onClick= {() => this.addOrRemoveFilter("alignment", "UNKNOWN")}>Show UNKNOWN</Button><br/><br/>
+      
+      <Typography>Sort by Character Powerstat</Typography>
+      <Dropdown options={options} onChange={this.onSelect} value={this.state.sortFilter} placeholder="Sort by character powerstat" /><br/>
+
       <Typography style={{marginTop: "25px"}} gutterBottom variant="h6" component="h6">Search</Typography>
       <div className="fuzzySearch">
         <FuzzySearch
@@ -160,7 +177,7 @@ class CharacterList extends Component {
         <br/>
       </div>
       <Container style={{display:"flex"}}>
-        <Typography style={{marginTop: "15px"}} gutterBottom variant="h6" component="h6">{this.state.compareNames.length ? "You have selected " + this.state.compareNames.slice(",").join(", ") : "Please select characters to compare"} to compare.</Typography>
+        <Typography style={{marginTop: "15px"}} gutterBottom variant="h6" component="h6">{this.state.compareNames.length ? "You have selected " + this.state.compareNames.slice(",").join(", ") : "Please select characters to compare"}.</Typography>
         {this.state.compareItems.map((character) => <Avatar alt={character.slug} src={character.image}/>)}
         {(this.state.compareItems && this.state.compareItems.length > 1) ? <Link to={{pathname: "/compare-characters", state:{ items: this.state.compareItems }}}>
         <Button size="small" variant = "contained" color= "primary" >
@@ -170,10 +187,10 @@ class CharacterList extends Component {
       </Container>
       <Container style={{display:"flex"}}>
         <div className="characterListCards">
-          { superheroes_villians && this.state.filters ? superheroes_villians.filter((character) => this.checkObjectAgainstFilters(character, this.state.filters)).map(item => <ListItem style={{padding: "1px"}} key={item.id} item={item} clickToCompare={this.clickToCompare} />) : 
-            superheroes_villians.sort((character) => this.sortCharacters(character, sortFilter)).map(item => <ListItem style={{padding: "1px"}} key={item.id} item={item} clickToCompare={this.clickToCompare} />) }
-            {/* // : <h2>loading</h2>} */}
-            {/* // <h2>loading</h2>} */}
+          { superheroes_villians && this.state.filters ? superheroes_villians.filter((character) => this.checkObjectAgainstFilters(character, this.state.filters)).map(item => <ListItem style={{padding: "1px"}} key={item.id} item={item} clickToCompare={this.clickToCompare} />)
+          .sort(function(a, b) { return JSON.parse(a.props.item.rawJSON).powerstats[sortFilter] - JSON.parse(b.props.item.rawJSON).powerstats[sortFilter]})
+           :
+           ( <h2>loading</h2> ) }
         </div>
       </Container>
     </div>
