@@ -1,4 +1,5 @@
 const path = require('path');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const SRC_DIR = path.join(__dirname, '/client/src');
 const DIST_DIR = path.join(__dirname, '/client/dist');
@@ -6,7 +7,6 @@ const DIST_DIR = path.join(__dirname, '/client/dist');
 module.exports = {
   entry: {
     scripts: './client/src/index.jsx',
-    styles: './client/src/styles/main.css',
   },
   output: {
     filename: 'bundle/[name].js',
@@ -24,11 +24,14 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        loader: 'css-loader',
-        options: {
-          url: true,
-        },
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: 'css-loader',
+        }),
       },
     ],
   },
+  plugins: [
+    new ExtractTextPlugin('styles.css'),
+  ],
 };

@@ -53,6 +53,10 @@ app.get('/heroes_villians', (req, res) => {
   });
 });
 
+app.get('/*', (req, res) => {
+  res.redirect('/');
+});
+
 app.listen(3000, () => {
   console.log('listening on port 3000!');
 });

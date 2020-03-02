@@ -22,21 +22,11 @@ class CharacterCard extends Component {
   render() {
     const { item, clickToCompare } = this.props; 
     let color = (item.alignment && item.alignment.toLowerCase() === "good") ? "blue" : "red";
-
-    const classes = makeStyles({
-      root: {
-        width: 50,
-        backgroundColor: color,
-      },
-      media: {
-        height: 140,
-      },
-    });
     const characterEndpoint = window.location.href.indexOf("character") !== -1 && window.location.href.indexOf("compare") === -1;
     const characterRenderShowMore = window.location.href.indexOf("character") !== -1;
     let parsedItem = JSON.parse(item.rawJSON);
     return(
-      <Card style={{width: characterEndpoint ? "100%" : "50%", backgroundColor: color, color: "white" }} className={classes.root}>
+      <Card style={{width: characterEndpoint ? "100%" : "48%", backgroundColor: color, color: "white", margin: "5px" }} >
         <Link to={`/character/${item.id}`} params={{ id: item.id }}>
           <CardActionArea>
             <CardMedia
@@ -46,33 +36,33 @@ class CharacterCard extends Component {
               image={item.image}
               title="character image"
             />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="h2">
+            <CardContent className="cardContent">
+              <Typography gutterBottom variant="h4" component="h2">
                 {item.name}
               </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                May add description here
+              <Typography variant="body2" color="white" component="p">
+                Also known as: {parsedItem.biography.alterEgos}
               </Typography>
               <Typography>
-                {item.alignment}
+                Alignment: {item.alignment}
               </Typography>
             </CardContent>
           </CardActionArea>
           </Link>
           <CardActions>
             {window && !characterRenderShowMore ?
-            <div>
+            <div className="smallButton">
               <Link to={`/character/${item.id}`} params={{ id: item.id }}>
-                <Button size="small" color="primary">
+                <Button size="small" color="white">
                   Learn More
                 </Button>
               </Link>
-                 <Button size="small" color="primary" onClick={() => {clickToCompare(item)}}>
+                 <Button size="small" onClick={() => {clickToCompare(item)}}>
                  Compare
                </Button>
                </div>
               :
-              <Button size="small" color="primary" onClick={() => this.setState({ showDetails: !this.state.showDetails}, console.log('click'))}>
+              <Button size="small" onClick={() => this.setState({ showDetails: !this.state.showDetails}, console.log('click'))}>
                   {!this.state.showDetails ? "Learn More" : "Hide details"};
               </Button>
             }

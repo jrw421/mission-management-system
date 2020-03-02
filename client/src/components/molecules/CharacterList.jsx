@@ -5,6 +5,8 @@ import axios from 'axios';
 import FuzzySearch from 'react-fuzzy';
 import Button from '@material-ui/core/Button';
 import { action } from '@storybook/addon-actions';
+import '../../styles/main.css';
+import { Typography } from '@material-ui/core';
 
 class CharacterList extends Component {
   constructor(props){
@@ -54,7 +56,7 @@ class CharacterList extends Component {
   }
 
   getHeroStatsById(id) {
-    axios.get(`/hero-stats/${2}`)
+    axios.get(`/hero-stats/${id}`)
       .then(stats => {
         console.log('stats ', stats)
       })
@@ -64,7 +66,7 @@ class CharacterList extends Component {
   }
   
   getVillianStatsById(id) {
-    axios.get(`/villian-stats/${12}`)
+    axios.get(`/villian-stats/${id}`)
       .then(stats => {
         console.log('villian stats ', stats)
       })
@@ -107,42 +109,46 @@ class CharacterList extends Component {
   render() {
     const { superheroes_villians } = this.state
     return(
-      <div>
-        <h1> List All Heroes and Villians</h1>
-        <h3>You have selected {this.state.compareNames.length ? this.state.compareNames.slice(",").join(", ") : "no characters"} to compare.</h3>
+      <div className="characterList">
+        <Typography gutterBottom variant="h2" component="h2"> List All Heroes and Villians</Typography>
+        <Typography gutterBottom variant="h5" component="h5">You have selected {this.state.compareNames.length ? this.state.compareNames.slice(",").join(", ") : "no characters"} to compare.</Typography>
         <Link to={{pathname: "/compare-characters", state:{ items: this.state.compareItems }}}><h3>See comparison</h3></Link><br/>
+        
+        <div className="fuzzySearch">
+          <FuzzySearch
+            list={superheroes_villians}
+            caseSensitive={false}
+            keys={['name', 'alignment']}
+            width={800}
+            onSelect={action('selected')}
+            distance={3}
+            threshold={.01}
+            resultsTemplate={(props, state, styles, clickHandler) => {
+              return state.results.map((item, i) => {
+                const style = state.selectedIndex === i ? styles.selectedResultStyle : styles.resultsStyle;
+                return (
+                    <div
+                      key={i}
+                      style={style}
+                    >
+                      <Link to={`/character/${item.id}`} params={{ id: item.id }}>{item.name}</Link>
+                      <span style={{ float: 'right', opacity: 0.5 }}> {item.alignment}</span>
+                  </div>
+                );
+              });
+            }}
+          />
+          <br/>
+        </div>
 
-        <h2>Filter characters with multiple options. Filters in blue are being applied.</h2>
+        <Typography gutterBottom variant="h6" component="h6">Filter characters with multiple options. Filters in blue are being applied.</Typography >
         <Button color= {this.checkFilterIsActive(this.state.filters, "alignment", "BAD") ? "primary" : "secondary" } onClick= {() => this.addOrRemoveFilter("alignment", "BAD")}>Show Baddies</Button>
         <Button color= {this.checkFilterIsActive(this.state.filters, "alignment", "GOOD") ? "primary" : "secondary" } onClick= {() => this.addOrRemoveFilter("alignment", "GOOD")}>Show Goodies</Button>
         <Button color= {this.checkFilterIsActive(this.state.filters, "alignment", "NEUTRAL") ? "primary" : "secondary" } onClick= {() => this.addOrRemoveFilter("alignment", "NEUTRAL")}>Show Neutral</Button>
         <Button color= {this.checkFilterIsActive(this.state.filters, "alignment", "UNKNOWN") ? "primary" : "secondary" } onClick= {() => this.addOrRemoveFilter("alignment", "UNKNOWN")}>Show UNKNOWN</Button>
 
-        <FuzzySearch
-          list={superheroes_villians}
-          caseSensitive={false}
-          keys={['name', 'alignment']}
-          width={430}
-          onSelect={action('selected')}
-          distance={3}
-          threshold={.01}
-          resultsTemplate={(props, state, styles, clickHandler) => {
-            return state.results.map((item, i) => {
-              const style = state.selectedIndex === i ? styles.selectedResultStyle : styles.resultsStyle;
-              return (
-                  <div
-                    key={i}
-                    style={style}
-                  >
-                    <Link to={`/character/${item.id}`} params={{ id: item.id }}>{item.name}</Link>
-                    <span style={{ float: 'right', opacity: 0.5 }}> {item.alignment}</span>
-                </div>
-              );
-            });
-          }}
-        />
-        <div style={{display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
-          { superheroes_villians ? superheroes_villians.filter((character) => this.checkObjectAgainstFilters(character, this.state.filters)).map(item => <ListItem key={item.id} item={item} clickToCompare={this.clickToCompare} />) : <h2>loading</h2>}
+        <div className="characterListCards">
+          { superheroes_villians ? superheroes_villians.filter((character) => this.checkObjectAgainstFilters(character, this.state.filters)).map(item => <ListItem style={{padding: "1px"}} key={item.id} item={item} clickToCompare={this.clickToCompare} />) : <h2>loading</h2>}
         </div>
       </div>
     )
