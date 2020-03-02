@@ -4,6 +4,9 @@ While my time and resources were limited, I included my thought process, design 
 
 To start the application: 
 
+0. To start all processes, simply run  
+    `npm start`
+   Otherwise, to run one at at a time, see steps 1 - 3.
 1. Read the JSON from disk, find and fix corruption patterns, clean the data and finally populate the  database by running: 
     `npm run db-dev`
 2. Start the frontend in development mode by running: 

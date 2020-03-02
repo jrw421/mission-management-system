@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "mysql -u root -p mission_management < server/schema.sql && (webpack & node database-mysql/loadData.js & npm run server-dev)",
     "react-dev": "webpack -d --watch",
     "server-dev": "nodemon server/index.js",
     "test": "jest",
