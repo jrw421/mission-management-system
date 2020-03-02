@@ -74,3 +74,4 @@ Challenges:
 
 What would I go back and do differently?
 - Add linting to my codebase earlier on! Having normally worked on legacy codebases with linting already installed, it was not at the forefront of my mind, and thus was not added until midway through my work, making the tedious process of retroactive linting a time consuming process. 
+- Git workflow. Given the number of features and the timeline of the project I opted for the simplest git workflow possible. Given more time I would have defined (and documented) a more thorough workflow so that teammates could hop in and contribute at any point.
