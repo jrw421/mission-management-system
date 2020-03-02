@@ -2,20 +2,36 @@ Hey there! Thanks so much for taking a look at the Official Mission Management S
 
 While my time and resources were limited, I included my thought process, design thinking, and what I would include/do differently given more time. Of course, please feel free to reach out with any questions or clarifications you may have. In addition - always open to feature requests and constructive criticism.
 
-To start the application: 
+To start the application for development or demo purposes: 
 
-0. To start all processes, simply run  
-    `npm start`
-   Otherwise, to run one at at a time, see steps 1 - 3.
-1. Read the JSON from disk, find and fix corruption patterns, clean the data and finally populate the  database by running: 
-    `npm run db-dev`
+0. To start all processes, simply run  
+    `npm start`
+   Otherwise, to run one at at a time, see steps 1 - 3.
+
+1. Read the JSON from disk, find and fix corruption patterns, clean the data and finally populate the  database by running: 
+    `npm run db-dev`
 2. Start the frontend in development mode by running: 
-    `npm run react-dev`
+    `npm run react-dev`
 3. Start up the NodeJS backend by running: 
-    `npm run server-dev` 
-    OR 
-    `npm run docker-build` and `npm run docker-run` if you would rather run it in a local Docker container.
+    `npm run server-dev` 
+    OR 
+    `npm run docker-build` and `npm run docker-run` if you would rather run it in a local Docker container.
 4. Navigate to `localhost:3000` to view the running app (or `localhost:5000` if running with Docker.)
+
+To start the application for production purposes:
+
+1. Read the JSON from disk, find and fix corruption patterns, clean the data and finally populate the  database by running: 
+    `npm run db-dev`
+2. Start the frontend in production mode (this may take longer) by running: 
+    `npm run build`
+3. Start up the NodeJS backend in a docker container by running: 
+    `npm run docker-build` and `npm run docker-run` if you would rather run it in a local Docker container.
+4. Navigate to `localhost:3000` to view the running app (or `localhost:5000` if running with Docker.)
+
+Dependencies
+- Node ^13.9.0
+- NPM ^6.13.0
+- myql ^8.0.19
 
 Supported Browsers:
 - Officially Supported: Chrome 79.0.3945.130+
