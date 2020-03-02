@@ -28,7 +28,7 @@ Frontend Notes:
 - Frontend styling: 
     Given time constraints, I thought it prudent to use a component library, in this case MaterialUI. MaterialUI provided the framework for the character cards and button styling. In addition to this, some custom styling was included in a separate css file. While there is (regretably) some inline styling, this would have ideally all been moved to css files given more time.
 - Front-End Testing: 
-    This was made very difficult by my choice of using a pre-configured template with webpack 2.2.1. It had all the components I need for a basic build, but the outdated webpack version proved to make setting up Enzyme with Jest for testing front end components very difficult. In future projects (with longer timelines) I will absolutely stick with webpack 4+ to avoid arguably more complex configuration dealing with babel and the like.
+    This was made very difficult by my choice of using a pre-configured template with webpack 2.2.1. It had all the components I need for a basic build, but the outdated webpack version proved to make setting up Enzyme with Jest for testing front end components very difficult. In future projects (with longer timelines) I will absolutely stick with webpack 4+ to avoid arguably more complex configuration dealing with babel and the like. I was however still able to uglify / compress the distributed JS bundle from 2.68 MB to 610 kB and the css from 2.23kb to 1.7kb which is a substantial reduction!
 
 Backend Notes: 
 - JSON Data - reading, cleaning and parsing: 
