@@ -1,10 +1,18 @@
-const { cleanCorruptJSON } = require('../JSONUtilityHelpers/JSONCleanerUtility.js');
+const { cleanCorruptJSON, readAndCleanCorruptedJSON } = require('../JSONUtilityHelpers/JSONCleanerUtility.js');
 
 test('The CleanerUtility Handles all Edge Cases Identified', () => {
   // This part of the data is non-deterministic and tested elsewhere.
   const cleanedData = cleanCorruptJSON(veryCorruptJSONHero);
   cleanedData[0].slug = '18-adam-strange';
   expect(JSON.stringify(cleanedData)).toBe(fixedJSONHero);
+});
+
+test('The ReadAndClean utility is able to parse and return the corrupted data', () => {
+     return readAndCleanCorruptedJSON('database-mysql/JSONUtilityHelpers/corrupt.json').then((data) => {
+       expect(typeof data).toBe('object');
+     }).catch((err) => {
+       throw new Error(err);
+    });
 });
 
 const veryCorruptJSONHero = `[{

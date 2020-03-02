@@ -7,6 +7,7 @@
     "react-dev": "webpack -d --watch",
     "server-dev": "nodemon server/index.js",
     "test": "jest",
+    "test-coverage": "jest --coverage",
     "db-dev": "mysql -u root -p < server/schema.sql && node database-mysql/loadData.js",
     "docker-build": "docker build -t jrw421/blackboard-assessment .",
     "docker-run": "docker run -p 5000:3000 -d jrw421/blackboard-assessment",
