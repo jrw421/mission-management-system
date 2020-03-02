@@ -24,6 +24,8 @@ Frontend Notes:
     Data is loaded from the backend upon initial componentDidMount(), hydrating the frontend application with all data for superheroes and villians. The initial component then iterates through the data and renders a card for each character, adding an onClick to view further information about each individually. This initial component also provides the user with functionaltiy to compare up to four characters at once. In both the comparison view and the individual character view, users can view all available information for a given character.
 - Frontend styling: 
     Given time constraints, I thought it prudent to use a component library, in this case MaterialUI. MaterialUI provided the framework for the character cards and button styling. In addition to this, some custom styling was included in a separate css file. While there is (regretably) some inline styling, this would have ideally all been moved to css files given more time.
+- Front-End Testing: 
+    This was made very difficult by my choice of using a pre-configured template with webpack 2.2.1. It had all the components I need for a basic build, but the outdated webpack version proved to make setting up Enzyme with Jest for testing front end components very difficult. In future projects (with longer timelines) I will absolutely stick with webpack 4+ to avoid arguably more complex configuration dealing with babel and the like.
 
 Backend Notes: 
 - JSON Data - reading, cleaning and parsing: 
